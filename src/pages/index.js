@@ -7,6 +7,7 @@ import abi from "../../artifacts/contracts/Degen.sol/Degen.json";
 export default function Home() {
  const [provider,setProvider]=useState(undefined);
   const [balance,setBalance]=useState(undefined);
+  const [contractIns, setContractIns]=useState(undefined);
   const [currentAccount,setCurrentAccount]=useState(undefined);
   const[isShop,setIsShop]=useState(false);
   const [isTransfer,setIsTransfer]=useState(false);
@@ -15,7 +16,8 @@ export default function Home() {
   
   const contract_address= "0xCa5A0CE564eF2846E47Faf602F4442a3F12f4bf7";
   const contractABI=abi.abi;
-useEffect(()=>{
+//detect the wallet
+  useEffect(()=>{
 async function getProvider(){
   const ETHProvider=await detectEthereumProvider();
   if(ETHProvider){
@@ -27,14 +29,18 @@ async function getProvider(){
 getProvider();
 },[]);
 
+//connect the wallet
 const connectWallet= async ()=>{
   try{
     const account=await provider.send('eth_requestAccounts',[]);
 
     setCurrentAccount(account[0]);
     getBalance(currentAccount);
+    getInstance();
   }catch(e){setError(e.message)}
 }
+
+//get the balance
 const getBalance =async (account)=>{
     try{
       const bal = await provider.send('eth_getBalance',[account,'latest']);
@@ -42,6 +48,27 @@ const getBalance =async (account)=>{
     }catch(e){setError(e.message)}
 }
 
+//get instance to the deplyed contract
+
+const getInstance = async ()=>{
+ 
+  const signer =  await provider.getSigner();
+  const contractInstance = new ethers.Contract(contract_address,contractABI,signer);
+  setContractIns(contractInstance);
+}
+
+//fundtion for game reward
+
+const giveReward = async ()=>{
+  if(contractIns){
+    let tx =await contractIns.mint(currentAccount,1);
+    await tx.wait();
+    console.log("giveRewars called");
+    getBalance();
+  }
+}
+
+//initial connect wallet UI
 const connect = ()=>{
   if(!provider){
     return <p> Please install MetaMask in order to login</p>
@@ -74,12 +101,16 @@ const connect = ()=>{
   )}
 }
 
+
+
+
+
 return(
   <div className="outer-container">
     <div>{connect()}</div>
   <div className="inner-container">
    {!currentAccount&&(<button className="connectBtn" onClick={connectWallet}>Connect Wallet</button>)}
-  {currentAccount&&(<RandomNumber/>)}
+  {currentAccount&&(<RandomNumber giveReward={giveReward}/>)}
   </div>
   </div>
 )

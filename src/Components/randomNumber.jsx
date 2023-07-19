@@ -1,17 +1,20 @@
 import { useState } from "react";
-const RandomNumber=()=>{
+const RandomNumber=({giveReward})=>{
     const [guess,setGuess]= useState('');
   const [message,setMessage]= useState('');
   const [randomNum,setRandomNum]= useState('');
   const [isGenerated,setIsGenerated]=useState(false);
   const [count,setCount]=useState(0);
+  function Reward(){
+    giveReward();
+  }
     function generateRandomNumber(){
          setRandomNum(Math.floor(Math.random()*10)+1);
          setIsGenerated(!isGenerated);
          setMessage('');
     }
      const HandleGuess=()=>{
-         if(count>=2){
+         if(count>=2&&guess!=randomNum){
           setMessage("You Lose! Play Again")
           setCount(0);
           setGuess('');
@@ -20,6 +23,7 @@ const RandomNumber=()=>{
   
         if(guess==randomNum){ 
           setMessage("Congratulations! You guessed the right number!'");
+          Reward();
           setIsGenerated(!isGenerated);
           setCount(0);
           

@@ -47,9 +47,15 @@ describe("Degen Contracts", function(){
             await DegenToken.Burn(50);
             const ownerBalance = await DegenToken.balanceOf(owner.address);
             expect(ownerBalance).to.equal(150);
+ })
+ it("Should mint reward token to a account",async function(){
+    await DegenToken.mintReward();
+    // await DegenToken.transferTokens(addr1,addr2,100);
+    const ownerBalance = await DegenToken.balanceOf(owner.address);
+    expect(Number(hre.ethers.formatEther(ownerBalance))).to.equal(5);
 
 
-        })
+})
 
 
     })

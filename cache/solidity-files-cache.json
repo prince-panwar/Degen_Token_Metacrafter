@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "D:\\coding\\BlockChain\\degen\\contracts\\Degen.sol": {
-      "lastModificationDate": 1689684160023,
-      "contentHash": "4c98b8483700b0725b4e326f322f0ec0",
+      "lastModificationDate": 1689772499104,
+      "contentHash": "280dc92f6cc5e95c9d81b05e55ed1ea5",
       "sourceName": "contracts/Degen.sol",
       "solcConfig": {
         "version": "0.8.19",

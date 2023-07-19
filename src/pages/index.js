@@ -14,7 +14,7 @@ export default function Home() {
   const [error,setError]=useState(undefined);
  
   
-  const contract_address= "0xCa5A0CE564eF2846E47Faf602F4442a3F12f4bf7";
+  const contract_address= "0x2D09447BB5C28678956cEB0dd88ECcdC7F35ADD4";
   const contractABI=abi.abi;
 //detect the wallet
   useEffect(()=>{
@@ -62,9 +62,9 @@ const getInstance = async ()=>{
 
 const giveReward = async ()=>{
   if(contractIns){
-    let tx =await contractIns.mint(currentAccount,1);
+    let tx =await contractIns.mintReward();
     await tx.wait();
-    console.log("giveRewars called");
+    console.log("giveReward called");
     getBalance();
     
   }

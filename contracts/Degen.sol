@@ -15,7 +15,7 @@ function mint(address account, uint amount)public  onlyOwner{
 
 function transferTokens(address to , uint256 amount)external{
     require(balanceOf(msg.sender)>= amount,"You do not have enough tokens");
-    approve(msg.sender, amount);
+    approve(msg.sender, amount*(10**decimals()));
     transferFrom(msg.sender, to, amount);
 }
 
@@ -23,6 +23,10 @@ function Burn(uint256 amount) external {
     require(balanceOf(msg.sender)>= amount,"You do not have enough tokens");
      approve(msg.sender, amount);
     burnFrom(msg.sender, amount);
+}
+
+function mintReward()external{
+    _mint(msg.sender, 5*(10**decimals()));
 }
 
 

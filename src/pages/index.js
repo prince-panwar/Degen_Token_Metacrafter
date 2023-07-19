@@ -44,7 +44,8 @@ const connectWallet= async ()=>{
 const getBalance =async (account)=>{
     try{
       const bal = await provider.send('eth_getBalance',[account,'latest']);
-      setBalance(ethers.utils.formatEther(bal));
+      setBalance(ethers.utils.formatEther(bal))
+      console.log(balance);
     }catch(e){setError(e.message)}
 }
 
@@ -65,6 +66,7 @@ const giveReward = async ()=>{
     await tx.wait();
     console.log("giveRewars called");
     getBalance();
+    
   }
 }
 

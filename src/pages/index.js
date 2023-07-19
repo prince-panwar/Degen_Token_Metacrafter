@@ -1,6 +1,7 @@
 
 import { ethers } from "ethers"
 import { useState,useEffect } from "react"
+import RandomNumber from "@/Components/randomNumber";
 import detectEthereumProvider from "@metamask/detect-provider";
 import abi from "../../artifacts/contracts/Degen.sol/Degen.json";
 export default function Home() {
@@ -12,7 +13,6 @@ export default function Home() {
   const [error,setError]=useState(undefined);
  
   
-  const [value, setValue] = useState('');
   const contract_address= "0xCa5A0CE564eF2846E47Faf602F4442a3F12f4bf7";
   const contractABI=abi.abi;
 useEffect(()=>{
@@ -59,27 +59,30 @@ const connect = ()=>{
   </div>
 
  <div>
-   <p>This is a guessing game, you have to guess a number between 1 to 5 . correct guess will get yout 5 DGN ,you can transfer those to your friend of buy items from the shop</p>
+ <p className="game-description">
+              <em>This is a guessing game.</em>
+              <br />
+              <em>You have to guess a number between 1 to 10.</em>
+              <br />
+              <em>
+                A correct guess will get you 5 DGN.you will have 3 chances to guess the correct number. You can transfer those to
+                your friend or buy items from the shop.
+              </em>
+            </p>
  </div>
 </div>
   )}
 }
-
-
-
-
-
-
-
 
 return(
   <div className="outer-container">
     <div>{connect()}</div>
   <div className="inner-container">
    {!currentAccount&&(<button className="connectBtn" onClick={connectWallet}>Connect Wallet</button>)}
-
+  {currentAccount&&(<RandomNumber/>)}
   </div>
   </div>
 )
  
 }
+

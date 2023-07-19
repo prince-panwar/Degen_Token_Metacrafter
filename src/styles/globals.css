@@ -34,3 +34,9 @@
   border-radius: 15px;
   font-size: larger;
 }
+
+.game-description {
+  text-align:center;
+  font-style: italic;
+  margin-top: 10px; /* Add spacing between the guessing game and other content */
+}

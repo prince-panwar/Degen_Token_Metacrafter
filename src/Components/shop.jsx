@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Shop = () => {
+const Shop = ({Buy}) => {
   // Sample data for game items (you can replace this with actual data)
   const gameItems = [
     { id: 1, name: "Goku", imageUrl: "https://w0.peakpx.com/wallpaper/152/62/HD-wallpaper-goku-anime-black-pink.jpg" },
@@ -22,7 +22,7 @@ const Shop = () => {
   };
 
   const handleBuyClick = () => {
-    // Implement your buy logic here
+    Buy(25);
     alert(`You bought ${selectedItem.name}`);
   };
 
@@ -33,9 +33,12 @@ const Shop = () => {
         <img src={item.imageUrl} alt={item.name} />
         <p>{item.name}</p>
         {selectedItem && selectedItem.id === item.id && (
+            <div>
+            <p>Price :25 DGN</p>
           <button className="buy-button" onClick={handleBuyClick}>
             Buy
           </button>
+          </div>
         )}
       </div>
     ))}

@@ -3,6 +3,7 @@ import { ethers } from "ethers"
 import { useState,useEffect } from "react"
 import RandomNumber from "@/Components/randomNumber";
 import Transfer from "@/Components/transfer";
+import Shop from "@/Components/shop";
 import detectEthereumProvider from "@metamask/detect-provider";
 import abi from "../../artifacts/contracts/Degen.sol/Degen.json";
 
@@ -84,6 +85,14 @@ if(contractIns){
   getBalance();
 }
 }
+const Buy = async(amount)=>{
+  if(contractIns){
+    let tx = await contractIns.Burn(amount);
+    await tx.wait();
+    console.log("items purchased");
+    getBalance();
+  }
+}
 
 //initial connect wallet UI
 const connect = ()=>{
@@ -100,13 +109,13 @@ const connect = ()=>{
   <div className="navbar">
   <div className="account-info">
     <p className="p-tag">Your Account: {currentAccount}</p>
-    <button className="button" onClick={() => setIsTransfer(!isTransfer)}>transfer</button>
-    <button className="button" onClick={() => setIsShop(!isShop)}>Shop</button>
+    <button className="button" onClick={() => {setIsTransfer(false); setIsShop(false)}}>Home</button>
+    <button className="button" onClick={() => {setIsTransfer(true); setIsShop(false)}}>Transfer</button>
+    <button className="button" onClick={() => {setIsShop(true); setIsTransfer(false)}}>Shop</button>
     <p className="p-tag">Your Balance: {balance}</p>
   </div>
 </div>
-
- <div>
+{!isShop&&!isTransfer&&(<div>
  <p className="game-description">
               <em>This is a guessing game.</em>
               <br />
@@ -117,7 +126,21 @@ const connect = ()=>{
                 your friend or buy items from the shop.
               </em>
             </p>
- </div>
+ </div>)}
+ {!isShop&&isTransfer&&(<div>
+ <p className="game-description">
+              <em>You can send DGN Tokens to you friends</em>
+              <br />
+             </p>
+ </div>)}
+ {isShop&&!isTransfer&&(<div>
+ <p className="game-description">
+              <em>This is The shop.</em>
+              <br />
+              <em>You  can use the DGN token to buy items here</em>
+             </p>
+ </div>)}
+ 
 </div>
   )}
 }
@@ -133,7 +156,7 @@ return(
    {!currentAccount&&(<button className="connectBtn" onClick={connectWallet}>Connect Wallet</button>)}
    {currentAccount&&isTransfer&&!isShop&&(<Transfer transfer={transfer}/>)}
   {currentAccount&&!isTransfer&&!isShop&&(<RandomNumber giveReward={giveReward}/>)}
- 
+  {currentAccount&&!isTransfer&&isShop&&(<Shop Buy={Buy}/>)}
   </div>
   </div>
 )

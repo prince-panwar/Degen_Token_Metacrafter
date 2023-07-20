@@ -112,7 +112,7 @@ const connect = ()=>{
     <button className="button" onClick={() => {setIsTransfer(false); setIsShop(false)}}>Home</button>
     <button className="button" onClick={() => {setIsTransfer(true); setIsShop(false)}}>Transfer</button>
     <button className="button" onClick={() => {setIsShop(true); setIsTransfer(false)}}>Shop</button>
-    <p className="p-tag">Your Balance: {balance}</p>
+    <p className="p-tag">Your Balance: {balance} DGN</p>
   </div>
 </div>
 {!isShop&&!isTransfer&&(<div>

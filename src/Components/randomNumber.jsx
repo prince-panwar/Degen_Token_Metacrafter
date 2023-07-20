@@ -15,7 +15,7 @@ const RandomNumber=({giveReward})=>{
     }
      const HandleGuess=()=>{
          if(count>=2&&guess!=randomNum){
-          setMessage("You Lose! Play Again")
+          setMessage("You Lost! Play Again")
           setCount(0);
           setGuess('');
           setIsGenerated(!isGenerated);

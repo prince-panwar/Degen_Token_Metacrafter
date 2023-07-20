@@ -10,7 +10,7 @@
 }
 
 .p-tag {
-  /* Add any other styles you want for the paragraphs */
+  color: white;
 }
 .outer-container{
   background-color: black;
@@ -39,4 +39,74 @@
   text-align:center;
   font-style: italic;
   margin-top: 10px; /* Add spacing between the guessing game and other content */
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+  padding: 10px;
+}
+
+.account-info {
+  display: flex;
+  align-items: center;
+}
+
+.button-spacing {
+  margin: 0 10px;
+}
+.button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+ 
+  text-decoration: underline;
+}
+
+/* Style for the form container */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px; /* Spacing between form rows */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for each form row */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Spacing between label and input */
+}
+
+/* Style for labels */
+label {
+  font-weight: bold;
+}
+
+/* Style for inputs */
+input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Style for the submit button */
+button {
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Optional: Hover effect for the submit button */
+button:hover {
+  background-color: #0056b3;
 }

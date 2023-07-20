@@ -2,8 +2,10 @@
 import { ethers } from "ethers"
 import { useState,useEffect } from "react"
 import RandomNumber from "@/Components/randomNumber";
+import Transfer from "@/Components/transfer";
 import detectEthereumProvider from "@metamask/detect-provider";
 import abi from "../../artifacts/contracts/Degen.sol/Degen.json";
+
 export default function Home() {
  const [provider,setProvider]=useState(undefined);
   const [balance,setBalance]=useState(undefined);
@@ -35,19 +37,23 @@ const connectWallet= async ()=>{
     const account=await provider.send('eth_requestAccounts',[]);
 
     setCurrentAccount(account[0]);
-    getBalance(currentAccount);
-    getInstance();
+   getInstance();
+  getBalance();
   }catch(e){setError(e.message)}
 }
 
 //get the balance
-const getBalance =async (account)=>{
-    try{
-      const bal = await provider.send('eth_getBalance',[account,'latest']);
-      setBalance(ethers.utils.formatEther(bal))
-      console.log(balance);
-    }catch(e){setError(e.message)}
-}
+const getBalance= async()=>{
+   try {
+      if (contractIns) {
+        const balance = await contractIns.getBalance();
+        setBalance(Number(ethers.formatUnits(balance))); 
+        console.log(balance);
+      }
+  }catch (err){
+    console.error(err);
+  }
+  }
 
 //get instance to the deplyed contract
 
@@ -62,12 +68,21 @@ const getInstance = async ()=>{
 
 const giveReward = async ()=>{
   if(contractIns){
-    let tx =await contractIns.mintReward();
+    let tx =await contractIns.mint(currentAccount,5);
     await tx.wait();
     console.log("giveReward called");
     getBalance();
     
   }
+}
+
+const transfer = async (account,value)=>{
+if(contractIns){
+  let tx = await contractIns.transferTokens(account,value);
+  await tx.wait();
+  console.log("Trnasfered "+value);
+  getBalance();
+}
 }
 
 //initial connect wallet UI
@@ -82,10 +97,14 @@ const connect = ()=>{
   if(currentAccount){
   return (
     <div className="centered-container">
+  <div className="navbar">
   <div className="account-info">
     <p className="p-tag">Your Account: {currentAccount}</p>
+    <button className="button" onClick={() => setIsTransfer(!isTransfer)}>transfer</button>
+    <button className="button" onClick={() => setIsShop(!isShop)}>Shop</button>
     <p className="p-tag">Your Balance: {balance}</p>
   </div>
+</div>
 
  <div>
  <p className="game-description">
@@ -112,7 +131,9 @@ return(
     <div>{connect()}</div>
   <div className="inner-container">
    {!currentAccount&&(<button className="connectBtn" onClick={connectWallet}>Connect Wallet</button>)}
-  {currentAccount&&(<RandomNumber giveReward={giveReward}/>)}
+   {currentAccount&&isTransfer&&!isShop&&(<Transfer transfer={transfer}/>)}
+  {currentAccount&&!isTransfer&&!isShop&&(<RandomNumber giveReward={giveReward}/>)}
+ 
   </div>
   </div>
 )

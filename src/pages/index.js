@@ -17,7 +17,7 @@ export default function Home() {
   const [error,setError]=useState(undefined);
  
   
-  const contract_address= "0x2D09447BB5C28678956cEB0dd88ECcdC7F35ADD4";
+  const contract_address= "0x43B0534e0C1082cf6A7c9AEdf78a7c5cd6860C1d";
   const contractABI=abi.abi;
 //detect the wallet
   useEffect(()=>{
@@ -27,10 +27,13 @@ async function getProvider(){
     setProvider(new ethers.BrowserProvider(ETHProvider));
   }else{
     setError("Metamask not detected");
+    alert("Metamask not detected")
   }
 }
 getProvider();
 },[]);
+
+
 
 //connect the wallet
 const connectWallet= async ()=>{
@@ -40,7 +43,8 @@ const connectWallet= async ()=>{
     setCurrentAccount(account[0]);
    getInstance();
   getBalance();
-  }catch(e){setError(e.message)}
+  }catch(e){setError(e.message) 
+    alert(e.message);}
 }
 
 //get the balance
@@ -53,6 +57,8 @@ const getBalance= async()=>{
       }
   }catch (err){
     console.error(err);
+    setError(err.message);
+    alert(err.message);
   }
   }
 
@@ -66,33 +72,52 @@ const getInstance = async ()=>{
 }
 
 //fundtion for game reward
-
-const giveReward = async ()=>{
-  if(contractIns){
-    let tx =await contractIns.mint(currentAccount,5);
-    await tx.wait();
-    console.log("giveReward called");
-    getBalance();
-    
+const giveReward = async () => {
+  try {
+    if (contractIns) {
+      let tx = await contractIns.mintReward();
+      await tx.wait();
+      console.log("giveReward called");
+      getBalance();
+    }
+  } catch (error) {
+    console.error("Error in giveReward:", error);
+    setError(error.message);
+    alert(error.message);
   }
-}
+};
 
-const transfer = async (account,value)=>{
-if(contractIns){
-  let tx = await contractIns.transferTokens(account,value);
-  await tx.wait();
-  console.log("Trnasfered "+value);
-  getBalance();
-}
-}
-const Buy = async(amount)=>{
-  if(contractIns){
-    let tx = await contractIns.Burn(amount);
-    await tx.wait();
-    console.log("items purchased");
-    getBalance();
+const transfer = async (account, value) => {
+  try {
+    if (contractIns) {
+      let tx = await contractIns.transferTokens(account, value);
+      await tx.wait();
+      console.log("Transferred " + value);
+      getBalance();
+    }
+  } catch (error) {
+    console.error("Error in transfer:", error);
+    setError(error.message);
+    alert(error.message);
   }
-}
+};
+
+const Buy = async (amount) => {
+  try {
+    if (contractIns) {
+      let tx = await contractIns.Burn(amount);
+      await tx.wait();
+      console.log("Items purchased");
+      getBalance();
+    }
+  } catch (error) {
+    console.error("Error in Buy:", error);
+    setError(error.message);
+    alert(error.message);
+  
+  }
+};
+
 
 //initial connect wallet UI
 const connect = ()=>{
@@ -157,6 +182,10 @@ return(
    {currentAccount&&isTransfer&&!isShop&&(<Transfer transfer={transfer}/>)}
   {currentAccount&&!isTransfer&&!isShop&&(<RandomNumber giveReward={giveReward}/>)}
   {currentAccount&&!isTransfer&&isShop&&(<Shop Buy={Buy}/>)}
+  </div>
+
+  <div>
+    
   </div>
   </div>
 )

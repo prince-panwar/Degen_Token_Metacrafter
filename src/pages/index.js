@@ -17,7 +17,7 @@ export default function Home() {
   const [error,setError]=useState(undefined);
  
   
-  const contract_address= "0x43B0534e0C1082cf6A7c9AEdf78a7c5cd6860C1d";
+  const contract_address= "0xEbCc5867b07558843490DC524DFe5cDf7debBD2b";
   const contractABI=abi.abi;
 //detect the wallet
   useEffect(()=>{
@@ -52,7 +52,7 @@ const getBalance= async()=>{
    try {
       if (contractIns) {
         const balance = await contractIns.getBalance();
-        setBalance(Number(ethers.formatUnits(balance))); 
+        setBalance(Number(ethers.formatEther(balance))); 
         console.log(balance);
       }
   }catch (err){
@@ -183,7 +183,7 @@ return(
   {currentAccount&&!isTransfer&&!isShop&&(<RandomNumber giveReward={giveReward}/>)}
   {currentAccount&&!isTransfer&&isShop&&(<Shop Buy={Buy}/>)}
   </div>
-
+  <button onClick={getBalance}>balance</button>
   <div>
     
   </div>

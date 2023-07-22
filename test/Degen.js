@@ -30,7 +30,7 @@ describe("Degen Contracts", function(){
             await DegenToken.mint(addr1,200);
             // await DegenToken.transferTokens(addr1,addr2,100);
             const addr1Balance = await DegenToken.balanceOf(addr1.address);
-            expect(addr1Balance).to.equal(200);
+            expect(Number(hre.ethers.formatEther(addr1Balance))).to.equal(200);
 
 
         })
@@ -38,7 +38,7 @@ describe("Degen Contracts", function(){
             await DegenToken.mint(owner,200);
             await DegenToken.transferTokens(addr2,50);
             const ownerBalance = await DegenToken.balanceOf(owner.address);
-            expect(ownerBalance).to.equal(150);
+            expect(Number(hre.ethers.formatEther(ownerBalance))).to.equal(150);
 
 
         })
@@ -46,7 +46,7 @@ describe("Degen Contracts", function(){
             await DegenToken.mint(owner,200);
             await DegenToken.Burn(50);
             const ownerBalance = await DegenToken.balanceOf(owner.address);
-            expect(ownerBalance).to.equal(150);
+            expect(Number(hre.ethers.formatEther(ownerBalance))).to.equal(150);
  })
  it("Should mint reward token to a account",async function(){
     await DegenToken.mintReward();

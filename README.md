@@ -4,7 +4,7 @@ Welcome to the Guessing Game website! In this game, you can play a guessing game
 
 ## How to Play
 
-### Visit the website: Link Provided in the Repository
+### Visit the website: [Here](https://degen-token-metacrafter.vercel.app/)
 
 ### Connect Your MetaMask Wallet:
 
